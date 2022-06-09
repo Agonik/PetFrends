@@ -29,6 +29,11 @@ def test_create_pet(name='Sem', animal_type='nn', age='2'):
         assert status == 200
         assert result['name'] == name
 
+def test_create_pet_no_data(name='', animal_type='', age=''):
+    _, auth_key = pf.get_api_key(email, password)
+    status, result = pf.create_pet(auth_key, name, animal_type, age)
+    assert status == 200
+    assert result['name'] == name
 
 def test_update_pet_info(name='Bob', animal_type='dog', age=11):
     # Получаем ключ auth_key и список своих питомцев
@@ -91,7 +96,18 @@ def test_successful_update_self_pet_info(name='Васька', animal_type='Ко�
         # если спиок питомцев пустой, то выкидываем исключение с текстом об отсутствии своих питомцев
         raise Exception("There is no pets")
 
-def test_add_new_pet(name='Шарик', animal_type='дворняга', age='7', pet_photo='images/1.jpeg'):
+def test_add_new_pet(name='Шарик', animal_type='дворняга', age='7', pet_photo='images/1.jpg'):
+
+    pet_photo = os.path.join(os.path.dirname(__file__), pet_photo)
+
+    _, auth_key = pf.get_api_key(email, password)
+
+    status, result = pf.add_new_pet(auth_key, name, animal_type, age, pet_photo)
+
+    assert status == 200
+    assert result['name'] == name
+
+def test_add_new_pet_no_data(name='', animal_type='', age='', pet_photo='images/2.jpg'):
 
     pet_photo = os.path.join(os.path.dirname(__file__), pet_photo)
 
